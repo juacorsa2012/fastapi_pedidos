@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.exceptions.custom_errors import ProveedorYaExisteError, ProveedorNombreInvalidoError
+from app.exceptions.custom_errors import ProveedorYaExisteError, ProveedorNombreInvalidoError, ProveedorNoEncontradoError
 from app.models.proveedor_model import Proveedor
 from app.schemas.proveedor_schema import ProveedorCreate
 from app.repositories.proveedor_repository import ProveedorRepository
@@ -22,7 +22,7 @@ class ProveedorService:
     if existe:
       raise ProveedorYaExisteError(nombre)    
     
-    nuevo_proveedor = await self.repo.registrar(proveedor)    
+    nuevo_proveedor = await self.repo.registrar(nombre)   
     return nuevo_proveedor
 
   async def obtener_todos(self, skip: int = 0, limit: int = 100) -> list[Proveedor]:
@@ -44,7 +44,7 @@ class ProveedorService:
     # Verificamos si el proveedor existe
     proveedor_actual = await self.repo.obtener_por_id(id)
     if not proveedor_actual:
-      raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=Mensajes.PROVEEDOR_YA_EXISTE)
+      raise ProveedorNoEncontradoError()      
 
     #  VALIDACIÓN DE UNICIDAD: Solo si el nombre ha cambiado
     if nombre_limpio != proveedor_actual.nombre:

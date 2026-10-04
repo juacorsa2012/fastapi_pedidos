@@ -16,10 +16,13 @@ class ProveedorYaExisteError(BaseAPIError):
     )
     self.nombre = nombre
 
-class ProveedorNombreInvalidoError(Exception):
-  def __init__(self, mensaje: str):
-    self.status_code = status.HTTP_400_BAD_REQUEST
-    super().__init__(mensaje)
+class ProveedorNombreInvalidoError(BaseAPIError):
+  def __init__(self, mensaje: str = "El nombre no puede estar vacío"):
+    super().__init__(
+      status_code=status.HTTP_400_BAD_REQUEST,
+      detail=mensaje,
+      error_code="NOMBRE_INVALIDO"
+    )
 
 class ProveedorNoEncontradoError(BaseAPIError):
   def __init__(self, id: int):

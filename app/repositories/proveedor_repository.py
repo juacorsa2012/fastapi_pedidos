@@ -7,12 +7,12 @@ class ProveedorRepository:
   def __init__(self, db: AsyncSession):
     self.db = db
 
-  async def registrar(self, proveedor: ProveedorCreate) -> Proveedor:
-    nuevo_proveedor = Proveedor(nombre = proveedor.nombre.strip().upper())
-    self.db.add(nuevo_proveedor)
+  async def registrar(self, nombre: str) -> Proveedor:
+    proveedor = Proveedor(nombre=nombre)
+    self.db.add(proveedor)
     await self.db.commit()
     await self.db.flush()
-    return nuevo_proveedor
+    return proveedor
 
   async def obtener_por_nombre(self, nombre: str) -> Proveedor | None:
     resultado = await self.db.execute(select(Proveedor).where(Proveedor.nombre == nombre.strip().upper()))

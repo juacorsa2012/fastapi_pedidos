@@ -7,7 +7,7 @@ class ClienteBase(BaseModel):
 class ClienteCreate(ClienteBase):
   pass
 
-class ProveedorRead(ClienteBase):
+class ClienteRead(ClienteBase):
   id: int
   created_at: datetime
   updated_at: datetime

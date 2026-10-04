@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.services.proveedor_service import ProveedorService
 from app.schemas.proveedor_schema import ProveedorCreate, ProveedorResponse
 from app.schemas.response_schema import ApiResponse
-from app.exceptions.custom_errors import ProveedorYaExisteError, BaseAPIError, ProveedorNombreInvalidoError
 from app.utils.messages import Mensajes
 from app.dependencies import get_proveedor_service
+from app.exceptions.custom_errors import ProveedorNoEncontradoError
 
 router = APIRouter()
 
@@ -34,7 +34,7 @@ async def obtener_proveedor_por_id(id: int, service: ProveedorService = Depends(
   proveedor = await service.obtener_por_id(id)
 
   if not proveedor:
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Proveedor con ID {id} no encontrado en la base de datos")      
+    return ProveedorNoEncontradoError(id)    
    
   return ApiResponse(
     message=Mensajes.EXITO,

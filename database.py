@@ -1,4 +1,3 @@
-import os
 from sqlalchemy.orm import declarative_base
 from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
@@ -18,8 +17,7 @@ async def get_db_session() -> AsyncIterator[AsyncSession]:
   session_factory = async_sessionmaker(bind=get_engine(), expire_on_commit=False)
   session = session_factory()
   try:
-    yield session
-    await session.commit()
+    yield session    
   except Exception:
     await session.rollback()
     raise
