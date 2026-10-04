@@ -1,3 +1,4 @@
+import logging
 import uvicorn
 from datetime import datetime, timezone
 from fastapi import FastAPI
@@ -5,6 +6,9 @@ from app.routers.proveedor_router import router as proveedores_router
 from app.exceptions.handlers import register_exception_handlers
 from app.core.config import settings
 from app.models import * 
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
   title="API de Pedidos",

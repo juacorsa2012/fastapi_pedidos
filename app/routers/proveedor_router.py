@@ -34,7 +34,7 @@ async def obtener_proveedor_por_id(id: int, service: ProveedorService = Depends(
   proveedor = await service.obtener_por_id(id)
 
   if not proveedor:
-    return ProveedorNoEncontradoError(id)    
+    raise ProveedorNoEncontradoError(id)    
    
   return ApiResponse(
     message=Mensajes.EXITO,
